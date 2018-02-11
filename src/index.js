@@ -44,8 +44,8 @@ function Square(props) {
   }
   
   class Game extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             history: [{
                 squares: Array(9).fill(null),
@@ -53,7 +53,8 @@ function Square(props) {
                 row: null
             }],
             xIsNext: true,
-            stepNumber: 0
+            stepNumber: 0,
+            ascending: true
         }
     }
 
@@ -71,6 +72,13 @@ function Square(props) {
           history: history.concat([{squares: squares, row: row, col: col}]),
           xIsNext: !this.state.xIsNext,
           stepNumber: history.length
+      });
+    }
+
+    toggleSort() {
+      const ascending = this.state.ascending;
+      this.setState({
+        ascending: !ascending,
       });
     }
     
@@ -117,7 +125,8 @@ function Square(props) {
           </div>
           <div className="game-info">
             <div>{status}</div>
-            <ol>{moves}</ol>
+            <button onClick={() => this.toggleSort()}>Sort moves</button>
+            {(() => this.state.ascending === true? <ol>{moves}</ol> : <ol>{moves.reverse()}</ol>) ()}
           </div>
         </div>
       );
